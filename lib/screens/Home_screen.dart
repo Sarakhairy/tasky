@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tasky/models/task_model.dart';
 import 'package:tasky/screens/add_task.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -11,8 +14,10 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   String name = 'Default';
+  dynamic task = [];
   @override
   void initState() {
+    _loadTasks();
     super.initState();
     _loadData();
   }
@@ -21,6 +26,19 @@ class _HomeScreenState extends State<HomeScreen> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     name = prefs.getString("username") ?? '';
     setState(() {});
+  }
+
+  void _loadTasks() async {
+    final prefs = await SharedPreferences.getInstance();
+    final finalTask = prefs.getString("tasks");
+    if (finalTask != null) {
+      final taskAfterDecode = jsonDecode(finalTask) as List<dynamic>;
+      setState(() {
+        task = taskAfterDecode.map((e) {
+          return TaskModel.fromJson(e);
+        }).toList();
+      });
+    }
   }
 
   @override
@@ -80,6 +98,21 @@ class _HomeScreenState extends State<HomeScreen> {
               Text(
                 "Yuhuu, Your work is\nalmost done",
                 style: TextStyle(fontSize: 32),
+              ),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: task.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: EdgeInsets.only(top: 8),
+                      child: Container(
+                        height: 56,
+                        width: double.infinity,
+                        child: Text(task[index].taskTitle),
+                      ),
+                    );
+                  },
+                ),
               ),
             ],
           ),

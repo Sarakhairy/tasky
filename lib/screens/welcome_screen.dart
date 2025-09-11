@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tasky/screens/home_screen.dart';
+import 'package:tasky/screens/main_screen.dart';
 
 class WelcomeScreen extends StatefulWidget {
   WelcomeScreen({super.key});
@@ -110,7 +110,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                           context,
                         MaterialPageRoute(
                           builder: (context) {
-                            return HomeScreen();
+                            return MainScreen();
                           },
                         ),
                       );

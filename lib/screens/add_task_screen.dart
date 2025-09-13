@@ -115,6 +115,7 @@ class _AddTaskState extends State<AddTask> {
                 onPressed: () async {
                   if (key.currentState!.validate()) {
                     final model = TaskModel(
+                      id: DateTime.now().millisecondsSinceEpoch,
                       taskTitle: taskTitleController.text,
                       taskDescription: taskDescriptionController.text,
                       isHighPriority: isHighPriority,

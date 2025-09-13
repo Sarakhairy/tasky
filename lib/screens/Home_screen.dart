@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tasky/models/task_model.dart';
 import 'package:tasky/screens/add_task.dart';
+import 'package:tasky/widgets/task_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -62,7 +63,9 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       backgroundColor: Colors.grey[200],
       body: SafeArea(
-        child: Padding(
+        child: task.isEmpty
+          ? Center(child: Text("No Tasks Added Yet"))
+          : Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -106,68 +109,18 @@ class _HomeScreenState extends State<HomeScreen> {
                   itemBuilder: (context, index) {
                     return Padding(
                       padding: EdgeInsets.only(top: 8),
-                      child: Container(
-                        alignment: Alignment.center,
-                        height: 56,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(16),
-                          border: Border.all(color: Colors.grey.shade300),
-                        ),
-                        width: double.infinity,
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                          Checkbox(
-                            value: task[index].isCompleted,
-                            onChanged: (value) async {
-                              setState(() {
-                                task[index].isCompleted = value ?? false;
-                              });
-                              final prefs = await SharedPreferences.getInstance();
-                              final String encodedData = jsonEncode(
-                                  task.map((e) => e.toJson()).toList());
-                              await prefs.setString("tasks", encodedData);
-                            },
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(4)),
-                            activeColor: Color(0xFF15B86C),
-
-                          ),
-                          SizedBox(width: 8),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  task[index].taskTitle,
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400,
-                                    decoration: task[index].isCompleted
-                                        ? TextDecoration.lineThrough
-                                        : TextDecoration.none,
-                                  ),
-                                ),
-                                task[index].taskDescription != null ? Text(
-                                  task[index].taskDescription,
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w400,
-                                    color: Color(0xFF6D6D6D),
-                                    decoration: task[index].isCompleted
-                                        ? TextDecoration.lineThrough
-                                        : TextDecoration.none,
-                                  ),
-                                ):SizedBox(height: 10,)
-                              ],
-                            ),
-                          ),
-                          Spacer(),
-                          IconButton(onPressed: (){}, icon: Icon(Icons.more_vert))
-                        ],)
+                      child: TaskWidget(
+                        task: task[index],
+                        onChanged: (value) async {
+                          setState(() {
+                            task[index].isCompleted = value ?? false;
+                          });
+                          final prefs = await SharedPreferences.getInstance();
+                          final String encodedData = jsonEncode(
+                            task.map((e) => e.toJson()).toList(),
+                          );
+                          await prefs.setString("tasks", encodedData);
+                        },
                       ),
                     );
                   },

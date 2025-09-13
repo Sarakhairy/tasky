@@ -18,6 +18,19 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Tasky',
+      theme: ThemeData(
+        scaffoldBackgroundColor: Colors.grey[200],
+        appBarTheme: AppBarTheme(
+          backgroundColor: Colors.grey[200],
+          elevation: 0,
+          iconTheme: IconThemeData(color: Colors.black),
+          titleTextStyle: TextStyle(
+            color: Colors.black,
+            fontSize: 20,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ),
       home: userName == null ? WelcomeScreen() : MainScreen(),
     );
   }

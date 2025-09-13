@@ -3,8 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tasky/models/task_model.dart';
-import 'package:tasky/screens/home_screen.dart';
-
+import 'package:tasky/screens/main_screen.dart';
 class AddTask extends StatefulWidget {
   const AddTask({super.key});
 
@@ -14,6 +13,7 @@ class AddTask extends StatefulWidget {
 
 class _AddTaskState extends State<AddTask> {
   final TextEditingController taskTitleController = TextEditingController();
+  List<dynamic> tasks = [];
 
   final TextEditingController taskDescriptionController =
       TextEditingController();
@@ -114,24 +114,24 @@ class _AddTaskState extends State<AddTask> {
               ElevatedButton.icon(
                 onPressed: () async {
                   if (key.currentState!.validate()) {
+                    final prefs = await SharedPreferences.getInstance();
+                    final taskJson = prefs.getString('tasks');
+                    if (taskJson != null) {
+                      tasks = jsonDecode(taskJson);
+                    }
                     final model = TaskModel(
+                      id: tasks.length * 1,
                       taskTitle: taskTitleController.text,
                       taskDescription: taskDescriptionController.text,
                       isHighPriority: isHighPriority,
                     );
-                    final prefs = await SharedPreferences.getInstance();
-                    final taskJson = prefs.getString('tasks');
-                    List<dynamic> tasks = [];
-                    if (taskJson != null) {
-                      tasks = jsonDecode(taskJson);
-                    }
                     tasks.add(model.toJson());
                     final taskEncoded = jsonEncode(tasks);
                     await prefs.setString('tasks', taskEncoded);
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
                         builder: (context) {
-                          return HomeScreen();
+                          return MainScreen();
                         },
                       ),
                     );

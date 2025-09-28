@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tasky/screens/user_details_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -11,9 +12,9 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   String name = "Default";
   bool isDarkMode = false;
+  String motivationQuote = '';
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _loadData();
   }
@@ -21,6 +22,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void _loadData() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     name = prefs.getString("username") ?? '';
+    motivationQuote =
+        prefs.getString("motivation_quote") ??
+        "One task at a time. One step closer.";
     setState(() {});
   }
 
@@ -65,8 +69,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
                 ),
                 Text(
-                  "One task at a time. One step closer.",
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+                  motivationQuote,
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.grey[600],
+                  ),
                 ),
               ],
             ),
@@ -74,6 +82,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
             Text("Profile Info", style: TextStyle(fontSize: 20)),
             SizedBox(height: 8),
             ListTile(
+              onTap: () async {
+                bool? result = await Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return UserDetailsScreen(
+                        userName: name,
+                        motivationQuote: motivationQuote,
+                      );
+                    },
+                  ),
+                );
+                if (result != null && result) {
+                  _loadData();
+                }
+              },
               contentPadding: EdgeInsets.zero,
               title: Text("User Details", style: TextStyle(fontSize: 16)),
               leading: Icon(Icons.person_outline),
@@ -91,9 +114,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 value: isDarkMode,
                 onChanged: (val) {
                   isDarkMode = val;
-                  setState(() {
-                    
-                  });
+                  setState(() {});
                 },
               ),
             ),

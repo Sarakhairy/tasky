@@ -39,7 +39,7 @@ class _HighPriorityTasksScreenState extends State<HighPriorityTasksScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("High Priority Tasks"),centerTitle: true,),
+      appBar: AppBar(title: Text("High Priority Tasks"),),
       body: task.isEmpty
           ? Center(child: Text("No High Priority Tasks"))
           : Padding(

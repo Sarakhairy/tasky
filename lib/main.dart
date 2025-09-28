@@ -20,6 +20,12 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Tasky',
       theme: ThemeData(
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ButtonStyle(
+            backgroundColor: WidgetStateProperty.all(Color(0xFF15B86C)),
+            foregroundColor: WidgetStateProperty.all(Colors.white),
+          )
+        ),
         scaffoldBackgroundColor: Colors.grey[200],
         appBarTheme: AppBarTheme(
           backgroundColor: Colors.grey[200],

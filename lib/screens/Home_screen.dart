@@ -17,6 +17,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   String name = 'Default';
+  String motivationQuote = "One task at a time. One step closer.";
   dynamic task = [];
   dynamic highPriorityTask = [];
   int totalTasks = 0;
@@ -32,6 +33,8 @@ class _HomeScreenState extends State<HomeScreen> {
   void _loadData() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     name = prefs.getString("username") ?? '';
+    motivationQuote = prefs.getString("motivation_quote") ?? "One task at a time. One step closer.";
+
     setState(() {});
   }
 
@@ -121,8 +124,9 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ),
                             Text(
-                              "One task at a time. One step closer.",
+                              motivationQuote,
                               style: TextStyle(
+                                color: Colors.grey[600],
                                 fontSize: 14,
                                 fontWeight: FontWeight.w400,
                               ),

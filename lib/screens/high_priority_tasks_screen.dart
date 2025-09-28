@@ -5,15 +5,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tasky/models/task_model.dart';
 import 'package:tasky/widgets/task_widget.dart';
 
-class CompletedTasksScreen extends StatefulWidget {
-  const CompletedTasksScreen({super.key});
+class HighPriorityTasksScreen extends StatefulWidget {
+  const HighPriorityTasksScreen({super.key});
 
   @override
-  State<CompletedTasksScreen> createState() => _CompletedTasksScreen();
+  State<HighPriorityTasksScreen> createState() => _HighPriorityTasksScreenState();
 }
 
-class _CompletedTasksScreen extends State<CompletedTasksScreen> {
-  dynamic task = [];
+class _HighPriorityTasksScreenState extends State<HighPriorityTasksScreen> {
+   dynamic task = [];
 
   @override
   void initState() {
@@ -31,18 +31,17 @@ class _CompletedTasksScreen extends State<CompletedTasksScreen> {
             .map((e) {
               return TaskModel.fromJson(e);
             })
-            .where((element) => element.isCompleted == true)
+            .where((element) => element.isHighPriority == true)
             .toList();
       });
     }
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Completed Tasks"),centerTitle: true,),
+      appBar: AppBar(title: Text("High Priority Tasks"),centerTitle: true,),
       body: task.isEmpty
-          ? Center(child: Text("No Completed Tasks"))
+          ? Center(child: Text("No High Priority Tasks"))
           : Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: ListView.builder(

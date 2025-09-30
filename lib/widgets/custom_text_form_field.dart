@@ -6,7 +6,7 @@ class CustomTextFormField extends StatefulWidget {
   final String? Function(String?)? validator;
   final String? hintText;
   final int? maxLines;
-   CustomTextFormField({super.key,required this.title, required this.controller, this.validator,required this.hintText, this.maxLines});
+   const CustomTextFormField({super.key,required this.title, required this.controller, this.validator,required this.hintText, this.maxLines});
 
   @override
   State<CustomTextFormField> createState() => _CustomTextFormFieldState();

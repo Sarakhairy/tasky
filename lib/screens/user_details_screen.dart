@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tasky/core/services/preferences_manager.dart';
 import 'package:tasky/widgets/custom_text_form_field.dart';
 
+// ignore: must_be_immutable
 class UserDetailsScreen extends StatefulWidget {
   String userName;
   String motivationQuote;
@@ -22,11 +23,12 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     userNameController = TextEditingController(text: widget.userName);
 
-     motivationQuotController = TextEditingController(text: widget.motivationQuote);
+    motivationQuotController = TextEditingController(
+      text: widget.motivationQuote,
+    );
   }
 
   @override
@@ -44,8 +46,8 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
                 title: "User Name",
                 controller: userNameController,
                 hintText: "Enter your name",
-                validator: (value){
-                  if(value == null || value.trim().isEmpty){
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
                     return "Please enter your name";
                   }
                   return null;
@@ -56,29 +58,41 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
                 title: "Motivation Quote",
                 controller: motivationQuotController,
                 hintText: "Enter your motivation quote",
-                validator: (value){
-                  if(value == null || value.trim().isEmpty){
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
                     return "Please enter your motivation quote";
                   }
                   return null;
                 },
               ),
               Spacer(),
-              ElevatedButton(onPressed: () async{
-                if(formKey.currentState!.validate()){
-                  final pref = await SharedPreferences.getInstance();
-                  await pref.setString("username", userNameController.text);
-                  await pref.setString("motivation_quote", motivationQuotController.text);
-                  Navigator.pop(context,true);
-                }
-
-
-              }, 
-              style: ElevatedButton.styleFrom(
-                minimumSize: Size(double.infinity, 40),
+              ElevatedButton(
+                onPressed: () async {
+                  if (formKey.currentState!.validate()) {
+                    await PreferencesManager().setString(
+                      "username",
+                      userNameController.text,
+                    );
+                    await PreferencesManager().setString(
+                      "motivation_quote",
+                      motivationQuotController.text,
+                    );
+                    FocusManager.instance.primaryFocus?.unfocus();
+                    await Future.doWhile(() async {
+                      await Future.delayed(Duration(milliseconds: 50));
+                      return MediaQuery.of(context).viewInsets.bottom > 0;
+                    });
+                    // ignore: use_build_context_synchronously
+                    if (mounted) {
+                      Navigator.pop(context, true);
+                    }
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  minimumSize: Size(double.infinity, 40),
+                ),
+                child: Text("Save Changes"),
               ),
-              child: Text("Save Changes"))
-
             ],
           ),
         ),

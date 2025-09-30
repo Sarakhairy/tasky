@@ -1,7 +1,8 @@
+// ignore: file_names
 import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tasky/core/services/preferences_manager.dart';
 import 'package:tasky/models/task_model.dart';
 import 'package:tasky/screens/add_task.dart';
 import 'package:tasky/screens/high_priority_tasks_screen.dart';
@@ -31,16 +32,14 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _loadData() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    name = prefs.getString("username") ?? '';
-    motivationQuote = prefs.getString("motivation_quote") ?? "One task at a time. One step closer.";
+    name = PreferencesManager().getString("username") ?? '';
+    motivationQuote = PreferencesManager().getString("motivation_quote") ?? "One task at a time. One step closer.";
 
     setState(() {});
   }
 
   void _loadTasks() async {
-    final prefs = await SharedPreferences.getInstance();
-    final finalTask = prefs.getString("tasks");
+    final finalTask = PreferencesManager().getString("tasks");
     if (finalTask != null) {
       final taskAfterDecode = jsonDecode(finalTask) as List<dynamic>;
 
@@ -61,8 +60,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _calculateProgress() async {
-    final prefs = await SharedPreferences.getInstance();
-    final finalTask = prefs.getString("tasks");
+
+    final finalTask = PreferencesManager().getString("tasks");
     if (finalTask != null) {
       final taskAfterDecode = jsonDecode(finalTask) as List<dynamic>;
       final allTasks = taskAfterDecode
@@ -261,12 +260,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                       task[index].isCompleted = value ?? false;
                                       _calculateProgress();
                                     });
-                                    final prefs =
-                                        await SharedPreferences.getInstance();
                                     final String encodedData = jsonEncode(
                                       task.map((e) => e.toJson()).toList(),
                                     );
-                                    await prefs.setString("tasks", encodedData);
+                                    await PreferencesManager().setString("tasks", encodedData);
                                     _loadTasks();
                                     await _calculateProgress();
                                   },

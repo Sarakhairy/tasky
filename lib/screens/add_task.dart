@@ -101,6 +101,7 @@ class _AddTaskState extends State<AddTask> {
                     tasks.add(model.toJson());
                     final taskEncoded = jsonEncode(tasks);
                     await prefs.setString('tasks', taskEncoded);
+                    // ignore: use_build_context_synchronously
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
                         builder: (context) {

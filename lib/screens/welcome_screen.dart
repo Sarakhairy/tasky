@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tasky/core/services/preferences_manager.dart';
 import 'package:tasky/screens/main_screen.dart';
 
 class WelcomeScreen extends StatefulWidget {
@@ -100,13 +100,13 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     ),
                     onPressed: () async {
                       if (widget.formKey.currentState!.validate()) {
-                        final SharedPreferences prefs =
-                            await SharedPreferences.getInstance();
-                        await prefs.setString(
+                        
+                        await PreferencesManager().setString(
                           "username",
                           widget.controller.text,
                         );
                          Navigator.pushReplacement(
+                          // ignore: use_build_context_synchronously
                           context,
                         MaterialPageRoute(
                           builder: (context) {

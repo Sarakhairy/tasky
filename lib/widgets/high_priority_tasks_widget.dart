@@ -2,9 +2,8 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tasky/core/services/preferences_manager.dart';
 import 'package:tasky/models/task_model.dart';
-
 
 // ignore: must_be_immutable
 class HighPriorityTasks extends StatefulWidget {
@@ -32,7 +31,7 @@ class _HighPriorityTasksState extends State<HighPriorityTasks> {
   @override
   Widget build(BuildContext context) {
     if (widget.task.isEmpty) {
-      return SizedBox.shrink(); 
+      return SizedBox.shrink();
     }
     return Container(
       decoration: BoxDecoration(
@@ -50,25 +49,27 @@ class _HighPriorityTasksState extends State<HighPriorityTasks> {
               style: TextStyle(color: Color(0xFF15B86C), fontSize: 14),
             ),
           ),
+
           Stack(
             children: [
+              SizedBox(height: 60),
               Positioned(
                 bottom: 16,
                 right: 16,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(50),
-                      border: Border.all(color: Colors.grey.shade400),
-                    ),
-                    child: Transform.rotate(
-                      angle: pi / 4,
-                      child: Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: Icon(Icons.arrow_upward, size: 30),
-                      ),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(50),
+                    border: Border.all(color: Colors.grey.shade400),
+                  ),
+                  child: Transform.rotate(
+                    angle: pi / 4,
+                    child: Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Icon(Icons.arrow_upward, size: 30),
                     ),
                   ),
+                ),
               ),
               ListView.builder(
                 shrinkWrap: true,
@@ -82,8 +83,10 @@ class _HighPriorityTasksState extends State<HighPriorityTasks> {
                           setState(() {
                             widget.task[index].isCompleted = value ?? false;
                           });
-                          final prefs = await SharedPreferences.getInstance();
-                          final allData = prefs.getString('tasks');
+
+                          final allData = PreferencesManager().getString(
+                            'tasks',
+                          );
                           if (allData != null) {
                             List<TaskModel> allDataList =
                                 (jsonDecode(allData) as List<dynamic>)
@@ -94,7 +97,7 @@ class _HighPriorityTasksState extends State<HighPriorityTasks> {
                             );
 
                             allDataList[newIndex] = widget.task[index];
-                            await prefs.setString(
+                            await PreferencesManager().setString(
                               "tasks",
                               jsonEncode(allDataList),
                             );
@@ -110,9 +113,8 @@ class _HighPriorityTasksState extends State<HighPriorityTasks> {
                       Text(
                         widget.task[index].taskTitle,
                         style: TextStyle(
-                          fontSize: 14,
+                          fontSize: 16,
                           fontWeight: FontWeight.w400,
-                          color: Color(0xFF6D6D6D),
                           decoration: widget.task[index].isCompleted
                               ? TextDecoration.lineThrough
                               : TextDecoration.none,

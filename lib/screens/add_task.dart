@@ -58,12 +58,6 @@ class _AddTaskState extends State<AddTask> {
                         hintText:
                             "Finish onboarding UI and hand off to devs by Thursday.",
                         maxLines: 5,
-                        validator: (value) {
-                          if (value == null || value.trim().isEmpty) {
-                            return "Please enter task description";
-                          }
-                          return null;
-                        },
                       ),
                       SizedBox(height: 20),
                       Row(

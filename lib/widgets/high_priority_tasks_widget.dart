@@ -35,9 +35,8 @@ class _HighPriorityTasksState extends State<HighPriorityTasks> {
     }
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.primaryContainer,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey.shade300),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -58,9 +57,9 @@ class _HighPriorityTasksState extends State<HighPriorityTasks> {
                 right: 16,
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.primaryContainer,
                     borderRadius: BorderRadius.circular(50),
-                    border: Border.all(color: Colors.grey.shade400),
+                    border: Border.all(color: Colors.grey.shade500),
                   ),
                   child: Transform.rotate(
                     angle: pi / 4,
@@ -112,13 +111,11 @@ class _HighPriorityTasksState extends State<HighPriorityTasks> {
                       SizedBox(width: 8),
                       Text(
                         widget.task[index].taskTitle,
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                          decoration: widget.task[index].isCompleted
-                              ? TextDecoration.lineThrough
-                              : TextDecoration.none,
-                        ),
+                        style: 
+                        widget.task[index].isCompleted
+                            ? Theme.of(context).textTheme.titleLarge
+                            :
+                        Theme.of(context).textTheme.titleMedium,
                       ),
                     ],
                   );

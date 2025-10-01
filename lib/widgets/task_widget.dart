@@ -14,9 +14,8 @@ class TaskWidget extends StatelessWidget {
       alignment: Alignment.center,
       height: 56,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.primaryContainer,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.grey.shade300),
       ),
       width: double.infinity,
       child: Row(
@@ -39,25 +38,19 @@ class TaskWidget extends StatelessWidget {
                 Text(
                   task.taskTitle,
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                    decoration: task.isCompleted
-                        ? TextDecoration.lineThrough
-                        : TextDecoration.none,
-                  ),
+                  style: task.isCompleted
+                            ? Theme.of(context).textTheme.titleLarge
+                            :
+                        Theme.of(context).textTheme.titleMedium,
                 ),
                 if(task.taskDescription.isNotEmpty) 
                     Text(
                         task.taskDescription,
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xFF6D6D6D),
-                          decoration: task.isCompleted
-                              ? TextDecoration.lineThrough
-                              : TextDecoration.none,
-                        ),
+                        style: 
+                        task.isCompleted
+                            ? Theme.of(context).textTheme.titleLarge
+                            :
+                        Theme.of(context).textTheme.titleMedium,
                       )
               ],
             ),

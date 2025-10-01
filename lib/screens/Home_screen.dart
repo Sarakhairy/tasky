@@ -1,11 +1,13 @@
 // ignore: file_names
 import 'dart:convert';
 import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:tasky/core/services/preferences_manager.dart';
 import 'package:tasky/models/task_model.dart';
 import 'package:tasky/screens/add_task.dart';
 import 'package:tasky/screens/high_priority_tasks_screen.dart';
+import 'package:tasky/screens/profile_screen.dart';
 import 'package:tasky/widgets/high_priority_tasks_widget.dart';
 import 'package:tasky/widgets/task_widget.dart';
 
@@ -33,7 +35,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _loadData() async {
     name = PreferencesManager().getString("username") ?? '';
-    motivationQuote = PreferencesManager().getString("motivation_quote") ?? "One task at a time. One step closer.";
+    motivationQuote =
+        PreferencesManager().getString("motivation_quote") ??
+        "One task at a time. One step closer.";
 
     setState(() {});
   }
@@ -60,7 +64,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _calculateProgress() async {
-
     final finalTask = PreferencesManager().getString("tasks");
     if (finalTask != null) {
       final taskAfterDecode = jsonDecode(finalTask) as List<dynamic>;
@@ -95,7 +98,6 @@ class _HomeScreenState extends State<HomeScreen> {
         icon: Icon(Icons.add),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
       ),
-      backgroundColor: Colors.grey[200],
       body: SafeArea(
         child: task.isEmpty
             ? Center(child: Text("No Tasks Added Yet"))
@@ -106,9 +108,19 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     Row(
                       children: [
-                        CircleAvatar(
-                          backgroundImage: AssetImage(
-                            "assets/images/avatar.png",
+                        InkWell(
+                          onTap: () async {
+                            await Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => ProfileScreen(),
+                              ),
+                            );
+                            _loadData();
+                          },
+                          child: CircleAvatar(
+                            backgroundImage: AssetImage(
+                              "assets/images/avatar.png",
+                            ),
                           ),
                         ),
                         SizedBox(width: 8),
@@ -117,18 +129,13 @@ class _HomeScreenState extends State<HomeScreen> {
                           children: [
                             Text(
                               "Good Evening, $name",
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400,
-                              ),
+                              style: Theme.of(
+                                context,
+                              ).textTheme.displayLarge!.copyWith(fontSize: 16),
                             ),
                             Text(
                               motivationQuote,
-                              style: TextStyle(
-                                color: Colors.grey[600],
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
-                              ),
+                              style: Theme.of(context).textTheme.titleSmall,
                             ),
                           ],
                         ),
@@ -144,17 +151,18 @@ class _HomeScreenState extends State<HomeScreen> {
                               children: [
                                 Text(
                                   "Yuhuu, Your work is\nalmost done",
-                                  style: TextStyle(fontSize: 32),
+                                  style: Theme.of(
+                                    context,
+                                  ).textTheme.displayLarge,
                                 ),
                                 SizedBox(height: 16),
                                 Container(
                                   width: double.infinity,
                                   decoration: BoxDecoration(
-                                    color: Colors.white,
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.primaryContainer,
                                     borderRadius: BorderRadius.circular(16),
-                                    border: Border.all(
-                                      color: Colors.grey.shade300,
-                                    ),
                                   ),
                                   padding: EdgeInsets.all(16),
                                   child: Row(
@@ -167,17 +175,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                         children: [
                                           Text(
                                             "Achieved Tasks",
-                                            style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w400,
-                                            ),
+                                            style: Theme.of(
+                                              context,
+                                            ).textTheme.titleMedium,
                                           ),
                                           Text(
                                             "$doneTasks Out of $totalTasks Done",
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w400,
-                                            ),
+                                            style: Theme.of(
+                                              context,
+                                            ).textTheme.titleSmall,
                                           ),
                                         ],
                                       ),
@@ -200,9 +206,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                           ),
                                           Text(
                                             "${percent * 100 ~/ 1}%",
-                                            style: TextStyle(
+                                            style: Theme.of(
+                                              context,
+                                            ).textTheme.titleSmall!.copyWith(
                                               fontSize: 12,
-                                              fontWeight: FontWeight.w500,
                                             ),
                                           ),
                                         ],
@@ -212,8 +219,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                                 SizedBox(height: 10),
                                 InkWell(
-                                  onTap: () async{
-                                   await Navigator.of(context).push(
+                                  onTap: () async {
+                                    await Navigator.of(context).push(
                                       MaterialPageRoute(
                                         builder: (context) {
                                           return HighPriorityTasksScreen();
@@ -263,7 +270,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                     final String encodedData = jsonEncode(
                                       task.map((e) => e.toJson()).toList(),
                                     );
-                                    await PreferencesManager().setString("tasks", encodedData);
+                                    await PreferencesManager().setString(
+                                      "tasks",
+                                      encodedData,
+                                    );
                                     _loadTasks();
                                     await _calculateProgress();
                                   },

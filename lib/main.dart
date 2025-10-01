@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tasky/core/services/preferences_manager.dart';
+import 'package:tasky/core/theme/dark_theme.dart';
+import 'package:tasky/core/theme/light_theme.dart';
 import 'package:tasky/screens/main_screen.dart';
 import 'package:tasky/screens/welcome_screen.dart';
 
@@ -21,25 +23,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Tasky',
-      theme: ThemeData(
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ButtonStyle(
-            backgroundColor: WidgetStateProperty.all(Color(0xFF15B86C)),
-            foregroundColor: WidgetStateProperty.all(Colors.white),
-          )
-        ),
-        scaffoldBackgroundColor: Colors.grey[200],
-        appBarTheme: AppBarTheme(
-          backgroundColor: Colors.grey[200],
-          elevation: 0,
-          iconTheme: IconThemeData(color: Colors.black),
-          titleTextStyle: TextStyle(
-            color: Colors.black,
-            fontSize: 20,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-      ),
+      theme: darkTheme,
       home: userName == null ? WelcomeScreen() : MainScreen(),
     );
   }

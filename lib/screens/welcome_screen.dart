@@ -15,7 +15,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -29,29 +28,27 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     children: [
                       Image(
                         image: AssetImage('assets/images/logo.png'),
-                        height: 42,
-                        width: 42,
+                        height: 55,
+                        width: 55,
                       ),
-                      SizedBox(width: 10),
                       Text(
                         "Tasky",
-                        style: TextStyle(
-                          fontSize: 28,
-                          fontWeight: FontWeight.w400,
-                        ),
+                        style: Theme.of(context).textTheme.displayMedium
                       ),
                     ],
                   ),
                   SizedBox(height: 108),
                   Text(
                     'Welcome To Tasky',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.w400),
+                    style: Theme.of(context).textTheme.displaySmall,
                   ),
                   SizedBox(height: 8),
 
                   Text(
                     'Your Productivity Journey Starts Here',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                    style: Theme.of(context).textTheme.displaySmall!.copyWith(
+                      fontSize: 16,
+                    )
                   ),
                   SizedBox(height: 24),
                   Image(
@@ -83,12 +80,9 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     },
                     decoration: InputDecoration(
                       hintText: "e.g. Sarah Khalid",
-                      hintStyle: TextStyle(color: Color(0xFF6D6D6D)),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(16),
-                        borderSide: BorderSide(color: Colors.grey[500]!),
-                      ),
                     ),
+                    
+                    style: Theme.of(context).textTheme.labelMedium,
                   ),
 
                   SizedBox(height: 24),

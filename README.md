@@ -1,16 +1,57 @@
-# tasky
+# 📋 Tasky App
 
-A new Flutter project.
+**Tasky App** is a minimal and intuitive **To-Do manager** built with **Flutter**.  
+It focuses on simplicity, allowing users to add, track, and organize their daily tasks with ease.  
+Currently **under development 🚀** with more features coming soon.
 
-## Getting Started
+---
 
-This project is a starting point for a Flutter application.
+## ✨ Key Features
 
-A few resources to get you started if this is your first Flutter project:
+- 🎉 **Onboarding Experience**
+  - One-time **Welcome Screen** to capture the user’s name.
+  - Data stored locally using **SharedPreferences**.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- 🏠 **Home Dashboard**
+  - Overview of all tasks.
+  - Task completion progress displayed both numerically and with a **circular progress indicator**.
+  - Quick view of the latest **4 high-priority tasks** with an option to explore all.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- ➕ **Task Management**
+  - Add tasks with a **title (required)** and **description (optional)**.
+  - Mark tasks as **High Priority**.
+
+- 📑 **Organized Tabs**
+  - **Completed Tasks** – review finished items.
+  - **Uncompleted Tasks** – keep track of pending work.
+  - **High Priority** – dedicated tab for urgent tasks.
+
+- 👤 **Profile & Settings**
+  - Edit username and motivational quote.
+  - Logout and clear all local data.
+  - (WIP) **Theme customization** (light/dark mode).
+
+---
+
+## 🛠️ Tech Stack
+- **Flutter** & **Dart**
+- **SharedPreferences** (local storage)
+- No external state management or Firebase (at this stage)
+
+---
+
+## 🚧 Roadmap
+- 🌗 Dark & Light Theme Support  
+- 🎨 Enhanced UI/UX  
+- 🔔 Notifications & Reminders  
+- ☁️ Cloud sync (Firebase integration)  
+
+---
+## 🚀 Getting Started
+
+Clone and run the project:
+
+```bash
+git clone https://github.com/USERNAME/tasky.git
+cd task
+flutter run
